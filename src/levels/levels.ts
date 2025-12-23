@@ -8,9 +8,6 @@ const CAPACITY = 4;
 const level1: Board = {
   capacity: CAPACITY,
   bottles: [
-    { colors: ['red', 'red', 'red', 'red'], capacity: CAPACITY },
-    { colors: ['blue', 'blue', 'blue', 'blue'], capacity: CAPACITY },
-    { colors: ['green', 'green', 'green', 'green'], capacity: CAPACITY },
     { colors: ['red', 'blue', 'green', 'red'], capacity: CAPACITY },
     { colors: ['blue', 'green', 'red', 'blue'], capacity: CAPACITY },
     { colors: ['green', 'red', 'blue', 'green'], capacity: CAPACITY },
@@ -25,13 +22,10 @@ const level1: Board = {
 const level2: Board = {
   capacity: CAPACITY,
   bottles: [
-    { colors: ['yellow', 'red', 'blue', 'green'], capacity: CAPACITY },
-    { colors: ['green', 'yellow', 'red', 'blue'], capacity: CAPACITY },
-    { colors: ['blue', 'green', 'yellow', 'red'], capacity: CAPACITY },
+    { colors: ['red', 'red', 'blue', 'blue'], capacity: CAPACITY },
+    { colors: ['green', 'green', 'yellow', 'yellow'], capacity: CAPACITY },
     { colors: ['red', 'blue', 'green', 'yellow'], capacity: CAPACITY },
-    { colors: ['yellow', 'green', 'blue', 'red'], capacity: CAPACITY },
-    { colors: ['red', 'yellow', 'green', 'blue'], capacity: CAPACITY },
-    { colors: [], capacity: CAPACITY },
+    { colors: ['blue', 'yellow', 'green', 'red'], capacity: CAPACITY },
     { colors: [], capacity: CAPACITY },
   ],
 };
@@ -42,14 +36,11 @@ const level2: Board = {
 const level3: Board = {
   capacity: CAPACITY,
   bottles: [
-    { colors: ['purple', 'orange', 'pink', 'cyan'], capacity: CAPACITY },
-    { colors: ['cyan', 'purple', 'orange', 'pink'], capacity: CAPACITY },
-    { colors: ['pink', 'cyan', 'purple', 'orange'], capacity: CAPACITY },
-    { colors: ['orange', 'pink', 'cyan', 'purple'], capacity: CAPACITY },
-    { colors: ['purple', 'orange', 'pink', 'cyan'], capacity: CAPACITY },
-    { colors: ['cyan', 'purple', 'orange', 'pink'], capacity: CAPACITY },
-    { colors: ['pink', 'cyan', 'purple', 'orange'], capacity: CAPACITY },
-    { colors: ['orange', 'pink', 'cyan', 'purple'], capacity: CAPACITY },
+    { colors: ['red', 'blue', 'green', 'yellow'], capacity: CAPACITY },
+    { colors: ['yellow', 'purple', 'red', 'blue'], capacity: CAPACITY },
+    { colors: ['green', 'yellow', 'purple', 'red'], capacity: CAPACITY },
+    { colors: ['blue', 'green', 'yellow', 'purple'], capacity: CAPACITY },
+    { colors: ['red', 'blue', 'green', 'purple'], capacity: CAPACITY },
     { colors: [], capacity: CAPACITY },
     { colors: [], capacity: CAPACITY },
   ],
