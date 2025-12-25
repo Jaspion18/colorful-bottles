@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Level } from '../logic/types';
 
 interface LevelSelectProps {
@@ -6,6 +7,7 @@ interface LevelSelectProps {
   unlockedLevels: number[];
   onLevelSelect: (levelId: number) => void;
   onClose: () => void;
+  hasCompletedPredefined: boolean;
 }
 
 export function LevelSelect({
@@ -14,11 +16,25 @@ export function LevelSelect({
   unlockedLevels,
   onLevelSelect,
   onClose,
+  hasCompletedPredefined,
 }: LevelSelectProps) {
+  const [activeTab, setActiveTab] = useState<'predefined' | 'generated'>('predefined');
+
+  // Filter levels based on whether user has completed all predefined levels
+  const predefinedLevels = levels.filter(l => l.id <= 15);
+  const generatedLevels = levels.filter(l => l.id > 15);
+  
+  // If user hasn't completed all predefined levels, only show predefined
+  const displayLevels = !hasCompletedPredefined 
+    ? predefinedLevels 
+    : activeTab === 'predefined' 
+      ? predefinedLevels 
+      : generatedLevels;
+
   const groupedLevels = {
-    easy: levels.filter(l => l.difficulty === 'easy'),
-    medium: levels.filter(l => l.difficulty === 'medium'),
-    hard: levels.filter(l => l.difficulty === 'hard'),
+    easy: displayLevels.filter(l => l.difficulty === 'easy'),
+    medium: displayLevels.filter(l => l.difficulty === 'medium'),
+    hard: displayLevels.filter(l => l.difficulty === 'hard'),
   };
 
   return (
@@ -26,32 +42,51 @@ export function LevelSelect({
       <div className="level-select-modal" onClick={(e) => e.stopPropagation()}>
         <h2 className="level-select-title">Select Level</h2>
         
+        {hasCompletedPredefined && (
+          <div className="level-tabs">
+            <button
+              className={`level-tab ${activeTab === 'predefined' ? 'active' : ''}`}
+              onClick={() => setActiveTab('predefined')}
+            >
+              Pre-defined
+            </button>
+            <button
+              className={`level-tab ${activeTab === 'generated' ? 'active' : ''}`}
+              onClick={() => setActiveTab('generated')}
+            >
+              Generated
+            </button>
+          </div>
+        )}
+        
         <div className="level-select-content">
           {Object.entries(groupedLevels).map(([difficulty, levelList]) => (
-            <div key={difficulty} className="level-difficulty-group">
-              <h3 className="difficulty-title">
-                {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-              </h3>
-              <div className="level-grid">
-                {levelList.map((level) => {
-                  const isUnlocked = unlockedLevels.includes(level.id);
-                  const isCurrent = level.id === currentLevel;
+            levelList.length > 0 && (
+              <div key={difficulty} className="level-difficulty-group">
+                <h3 className="difficulty-title">
+                  {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                </h3>
+                <div className="level-grid">
+                  {levelList.map((level) => {
+                    const isUnlocked = unlockedLevels.includes(level.id);
+                    const isCurrent = level.id === currentLevel;
 
-                  return (
-                    <button
-                      key={level.id}
-                      className={`level-button ${isCurrent ? 'current' : ''} ${
-                        !isUnlocked ? 'locked' : ''
-                      }`}
-                      onClick={() => isUnlocked && onLevelSelect(level.id)}
-                      disabled={!isUnlocked}
-                    >
-                      {isUnlocked ? level.id : '🔒'}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={level.id}
+                        className={`level-button ${isCurrent ? 'current' : ''} ${
+                          !isUnlocked ? 'locked' : ''
+                        }`}
+                        onClick={() => isUnlocked && onLevelSelect(level.id)}
+                        disabled={!isUnlocked}
+                      >
+                        {isUnlocked ? level.id : '🔒'}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )
           ))}
         </div>
 
