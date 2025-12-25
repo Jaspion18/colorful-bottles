@@ -1,3 +1,65 @@
+/**
+ * Returns the solution steps for a board if solvable, otherwise null.
+ * Each step is {s, t} (pour from s to t).
+ */
+export function getSolutionSteps(board: Board, capacity: number): Array<{s: number, t: number}> | null {
+  const serialize = (b: Board) => JSON.stringify(b);
+  const queue: { board: Board; steps: Array<{s: number, t: number}> }[] = [
+    { board: cloneBoard(board), steps: [] }
+  ];
+  const visited = new Set<string>();
+  visited.add(serialize(board));
+
+  while (queue.length > 0) {
+    const { board: current, steps } = queue.shift()!;
+    if (isSolved(current, capacity)) return steps;
+
+    const moves = getLegalMoves(current, capacity);
+    for (const { s, t } of moves) {
+      try {
+        const { board: next } = pour(current, capacity, s, t);
+        const key = serialize(next);
+        if (!visited.has(key)) {
+          visited.add(key);
+          queue.push({ board: next, steps: [...steps, { s, t }] });
+        }
+      } catch {
+        // Ignore invalid moves
+      }
+    }
+  }
+  return null;
+}
+/**
+ * Checks if a board is solvable using BFS (returns true if a solution exists)
+ */
+export function isSolvable(board: Board, capacity: number): boolean {
+  const serialize = (b: Board) => JSON.stringify(b);
+  const queue: { board: Board; history: string[] }[] = [{ board: cloneBoard(board), history: [] }];
+  const visited = new Set<string>();
+  visited.add(serialize(board));
+
+  while (queue.length > 0) {
+    const { board: current } = queue.shift()!;
+    if (isSolved(current, capacity)) return true;
+
+    const moves = getLegalMoves(current, capacity);
+    for (const { s, t } of moves) {
+      try {
+        const { board: next } = pour(current, capacity, s, t);
+        const key = serialize(next);
+        if (!visited.has(key)) {
+          visited.add(key);
+          queue.push({ board: next, history: [] });
+        }
+      } catch {
+        // Ignore invalid moves
+      }
+    }
+  }
+  return false;
+}
+
 import type { ColorId, Bottle, Board, MoveRecord } from './types';
 
 /**

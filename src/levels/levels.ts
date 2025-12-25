@@ -84,14 +84,14 @@ const level8Board: Board = [
   [],
 ];
 
-// Level 9: Hard - 6 colors, complex
+// Level 9: Hard - 6 colors, solvable
 const level9Board: Board = [
   ['red', 'orange', 'blue', 'green'],
   ['yellow', 'purple', 'red', 'orange'],
   ['blue', 'green', 'yellow', 'purple'],
-  ['red', 'orange', 'blue', 'green'],
-  ['yellow', 'purple', 'red', 'orange'],
-  ['blue', 'green', 'yellow', 'purple'],
+  ['green', 'yellow', 'purple', 'red'],
+  ['orange', 'blue', 'green', 'yellow'],
+  ['purple', 'red', 'orange', 'blue'],
   [],
 ];
 
@@ -137,14 +137,14 @@ const level13Board: Board = [
   [],
 ];
 
-// Level 14: Hard - 6 colors, tricky arrangement
+// Level 14: Hard - 6 colors, solvable
 const level14Board: Board = [
   ['red', 'green', 'yellow', 'orange'],
   ['blue', 'purple', 'red', 'green'],
   ['yellow', 'orange', 'blue', 'purple'],
-  ['red', 'green', 'yellow', 'orange'],
-  ['blue', 'purple', 'red', 'green'],
-  ['yellow', 'orange', 'blue', 'purple'],
+  ['orange', 'red', 'green', 'yellow'],
+  ['purple', 'blue', 'orange', 'red'],
+  ['green', 'yellow', 'purple', 'blue'],
   [],
 ];
 
