@@ -1,3 +1,6 @@
+import { levels } from "../levels/levels";
+import { isSolvable } from "../logic/rules";
+
 describe("Level solvability (sampled)", () => {
   const easy = levels.find(l => l.difficulty === 'easy');
   const medium = levels.find(l => l.difficulty === 'medium');
@@ -59,6 +62,3 @@ describe("Level solvability (sampled)", () => {
 //     expect(Array.isArray(steps) || steps === null).toBe(true);
 //   });
 // });
-
-import { levels } from "../levels/levels";
-import { isSolvable } from "../logic/rules";

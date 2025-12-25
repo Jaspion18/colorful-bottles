@@ -54,12 +54,20 @@ export function generateLevel(params: LevelGeneratorParams): Board {
   const board: Board = [];
   const coloredBottles = numBottles - emptyBottles;
   
-  // Fill bottles with shuffled colors
+  // Ensure we have exactly the right number of colored bottles
+  // Each color should appear exactly 'capacity' times
+  const totalColorUnits = numColors * capacity;
+  const unitsPerBottle = Math.floor(totalColorUnits / coloredBottles);
+  
+  // Fill bottles evenly with shuffled colors
   let colorIndex = 0;
   for (let i = 0; i < coloredBottles; i++) {
     const bottle: string[] = [];
-    const bottleSize = Math.min(capacity, shuffledColors.length - colorIndex);
-    for (let j = 0; j < bottleSize; j++) {
+    const bottleSize = i < coloredBottles - 1 
+      ? unitsPerBottle 
+      : shuffledColors.length - colorIndex; // Last bottle gets remaining colors
+    
+    for (let j = 0; j < bottleSize && colorIndex < shuffledColors.length; j++) {
       bottle.push(shuffledColors[colorIndex++]);
     }
     board.push(bottle);
