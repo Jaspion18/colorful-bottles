@@ -107,7 +107,7 @@ const level10Board: Board = [
   [],
 ];
 
-// Level 11: Hard - 6 colors, challenging mix
+// Level 11: Hard - 6 colors, two empty bottles
 const level11Board: Board = [
   ['red', 'blue', 'green', 'yellow'],
   ['purple', 'orange', 'red', 'blue'],
@@ -116,9 +116,10 @@ const level11Board: Board = [
   ['purple', 'orange', 'red', 'blue'],
   ['green', 'yellow', 'purple', 'orange'],
   [],
+  [],
 ];
 
-// Level 12: Hard - 6 colors, tricky arrangement
+// Level 12: Hard - 6 colors, two empty bottles
 const level12Board: Board = [
   ['red', 'orange', 'blue', 'green'],
   ['yellow', 'purple', 'red', 'orange'],
@@ -126,6 +127,7 @@ const level12Board: Board = [
   ['red', 'orange', 'blue', 'green'],
   ['yellow', 'purple', 'red', 'orange'],
   ['blue', 'green', 'yellow', 'purple'],
+  [],
   [],
 ];
 
