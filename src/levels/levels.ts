@@ -105,25 +105,27 @@ const level10Board: Board = [
   ['pink', 'red', 'blue', 'green'],
   ['yellow', 'purple', 'orange', 'pink'],
   [],
-  [],
 ];
 
-// Level 11: Medium - alternating patterns
+// Level 11: Hard - 6 colors, challenging mix
 const level11Board: Board = [
-  ['red', 'blue', 'red', 'blue'],
-  ['green', 'yellow', 'green', 'yellow'],
-  ['red', 'blue', 'red', 'blue'],
-  ['green', 'yellow', 'green', 'yellow'],
-  [],
+  ['red', 'blue', 'green', 'yellow'],
+  ['purple', 'orange', 'red', 'blue'],
+  ['green', 'yellow', 'purple', 'orange'],
+  ['red', 'blue', 'green', 'yellow'],
+  ['purple', 'orange', 'red', 'blue'],
+  ['green', 'yellow', 'purple', 'orange'],
   [],
 ];
 
-// Level 12: Medium - stacked colors
+// Level 12: Hard - 6 colors, tricky arrangement
 const level12Board: Board = [
-  ['red', 'red', 'blue', 'blue'],
-  ['green', 'green', 'red', 'red'],
-  ['blue', 'blue', 'green', 'green'],
-  [],
+  ['red', 'orange', 'blue', 'green'],
+  ['yellow', 'purple', 'red', 'orange'],
+  ['blue', 'green', 'yellow', 'purple'],
+  ['red', 'orange', 'blue', 'green'],
+  ['yellow', 'purple', 'red', 'orange'],
+  ['blue', 'green', 'yellow', 'purple'],
   [],
 ];
 
@@ -219,7 +221,7 @@ for (let i = 29; i <= 35; i++) {
 /**
  * All levels combined
  */
-export const levels: Level[] = [
+export const predefinedLevels: Level[] = [
   { id: 1, name: 'Level 1', difficulty: 'easy', board: level1Board, capacity: CAPACITY },
   { id: 2, name: 'Level 2', difficulty: 'easy', board: level2Board, capacity: CAPACITY },
   { id: 3, name: 'Level 3', difficulty: 'easy', board: level3Board, capacity: CAPACITY },
@@ -230,11 +232,15 @@ export const levels: Level[] = [
   { id: 8, name: 'Level 8', difficulty: 'hard', board: level8Board, capacity: CAPACITY },
   { id: 9, name: 'Level 9', difficulty: 'hard', board: level9Board, capacity: CAPACITY },
   { id: 10, name: 'Level 10', difficulty: 'hard', board: level10Board, capacity: CAPACITY },
-  { id: 11, name: 'Level 11', difficulty: 'medium', board: level11Board, capacity: CAPACITY },
-  { id: 12, name: 'Level 12', difficulty: 'medium', board: level12Board, capacity: CAPACITY },
+  { id: 11, name: 'Level 11', difficulty: 'hard', board: level11Board, capacity: CAPACITY },
+  { id: 12, name: 'Level 12', difficulty: 'hard', board: level12Board, capacity: CAPACITY },
   { id: 13, name: 'Level 13', difficulty: 'hard', board: level13Board, capacity: CAPACITY },
   { id: 14, name: 'Level 14', difficulty: 'hard', board: level14Board, capacity: CAPACITY },
   { id: 15, name: 'Level 15', difficulty: 'hard', board: level15Board, capacity: CAPACITY },
+];
+
+export const levels: Level[] = [
+  ...predefinedLevels,
   ...generatedLevels,
 ];
 

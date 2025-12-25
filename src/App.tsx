@@ -276,6 +276,7 @@ function App() {
           unlockedLevels={unlockedLevels}
           onLevelSelect={handleLevelSelect}
           onClose={() => setShowLevelSelect(false)}
+          hasCompletedPredefined={unlockedLevels.includes(16)}
         />
       )}
     </div>
