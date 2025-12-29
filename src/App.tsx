@@ -20,6 +20,58 @@ import {
   saveUnlockedLevels,
 } from './storage/storage';
 
+// Sound generation utilities using Web Audio API
+const getAudioContext = () => {
+  if (typeof window === 'undefined') return null;
+  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+  return AudioContextClass ? new AudioContextClass() : null;
+};
+const audioContext = getAudioContext();
+
+function playPourSound() {
+  if (!audioContext) return;
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+  oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.3);
+  
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
+  
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + 0.3);
+}
+
+function playWinSound() {
+  if (!audioContext) return;
+  
+  const notes = [523.25, 587.33, 659.25, 783.99]; // C5, D5, E5, G5
+  
+  notes.forEach((freq, i) => {
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.type = 'triangle';
+    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.15);
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime + i * 0.15);
+    gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + i * 0.15 + 0.05);
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + i * 0.15 + 0.3);
+    
+    oscillator.start(audioContext.currentTime + i * 0.15);
+    oscillator.stop(audioContext.currentTime + i * 0.15 + 0.3);
+  });
+}
+
 function App() {
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [unlockedLevels, setUnlockedLevels] = useState<number[]>(loadUnlockedLevels);
@@ -27,6 +79,8 @@ function App() {
   const [showLevelSelect, setShowLevelSelect] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [invalidMove, setInvalidMove] = useState(false);
+  const [pouringFrom, setPouringFrom] = useState<number | null>(null);
+  const [pouringTo, setPouringTo] = useState<number | null>(null);
 
   const [gameState, setGameState] = useState<GameState>(() => {
     const saved = loadGameState();
@@ -70,6 +124,11 @@ function App() {
     if (!gameState.isWon && isSolved(gameState.board, gameState.capacity)) {
       setGameState(prev => ({ ...prev, isWon: true }));
       
+      // Play win sound
+      if (settings.soundEnabled) {
+        playWinSound();
+      }
+      
       // Unlock next level
       const nextLevel = getNextLevel(gameState.currentLevel);
       if (nextLevel && !unlockedLevels.includes(nextLevel.id)) {
@@ -80,7 +139,7 @@ function App() {
       // Save best moves
       saveBestMoves(gameState.currentLevel, gameState.moves);
     }
-  }, [gameState.board, gameState.capacity, gameState.isWon, gameState.currentLevel, gameState.moves, unlockedLevels]);
+  }, [gameState.board, gameState.capacity, gameState.isWon, gameState.currentLevel, gameState.moves, unlockedLevels, settings.soundEnabled]);
 
   const handleBottleClick = useCallback((index: number) => {
     if (gameState.isWon || isAnimating) return;
@@ -96,10 +155,17 @@ function App() {
     } else {
       // Try to pour
       if (canPour(gameState.board, gameState.capacity, gameState.selectedBottle, index)) {
-        const animationDuration = settings.reducedMotion ? 0 : 300;
+        const animationDuration = settings.reducedMotion ? 0 : 600;
         
         if (!settings.reducedMotion) {
           setIsAnimating(true);
+          setPouringFrom(gameState.selectedBottle);
+          setPouringTo(index);
+        }
+
+        // Play pour sound
+        if (settings.soundEnabled) {
+          playPourSound();
         }
 
         setTimeout(() => {
@@ -117,6 +183,8 @@ function App() {
             console.error('Pour error:', error);
           } finally {
             setIsAnimating(false);
+            setPouringFrom(null);
+            setPouringTo(null);
           }
         }, animationDuration);
       } else {
@@ -126,7 +194,7 @@ function App() {
         setGameState(prev => ({ ...prev, selectedBottle: null }));
       }
     }
-  }, [gameState, isAnimating, settings.reducedMotion]);
+  }, [gameState, isAnimating, settings.reducedMotion, settings.soundEnabled]);
 
   const handleUndo = useCallback(() => {
     if (gameState.history.length > 0 && !isAnimating) {
@@ -223,6 +291,8 @@ function App() {
           onBottleClick={handleBottleClick}
           colorBlindMode={settings.colorBlindMode}
           isAnimating={isAnimating}
+          pouringFrom={pouringFrom}
+          pouringTo={pouringTo}
         />
 
         <div className="controls">

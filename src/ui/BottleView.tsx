@@ -8,6 +8,8 @@ interface BottleViewProps {
   capacity: number;
   colorBlindMode: boolean;
   isAnimating?: boolean;
+  isPouring?: boolean;
+  isPouringTarget?: boolean;
 }
 
 // Color patterns for color-blind mode
@@ -58,12 +60,14 @@ export function BottleView({
   capacity,
   colorBlindMode,
   isAnimating = false,
+  isPouring = false,
+  isPouringTarget = false,
 }: BottleViewProps) {
   const emptySlots = capacity - bottle.length;
 
   return (
     <button
-      className={`bottle ${isSelected ? 'selected' : ''} ${isAnimating ? 'animating' : ''}`}
+      className={`bottle ${isSelected ? 'selected' : ''} ${isAnimating ? 'animating' : ''} ${isPouring ? 'pouring-from' : ''} ${isPouringTarget ? 'pouring-to' : ''}`}
       onClick={onClick}
       aria-label={`Bottle ${index + 1}`}
       disabled={isAnimating}
