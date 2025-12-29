@@ -8,6 +8,8 @@ interface BoardViewProps {
   onBottleClick: (index: number) => void;
   colorBlindMode: boolean;
   isAnimating?: boolean;
+  pouringFrom?: number | null;
+  pouringTo?: number | null;
 }
 
 export function BoardView({
@@ -17,6 +19,8 @@ export function BoardView({
   onBottleClick,
   colorBlindMode,
   isAnimating = false,
+  pouringFrom = null,
+  pouringTo = null,
 }: BoardViewProps) {
   return (
     <div className="board">
@@ -30,6 +34,8 @@ export function BoardView({
           capacity={capacity}
           colorBlindMode={colorBlindMode}
           isAnimating={isAnimating}
+          isPouring={pouringFrom === index}
+          isPouringTarget={pouringTo === index}
         />
       ))}
     </div>
