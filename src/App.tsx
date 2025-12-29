@@ -21,7 +21,12 @@ import {
 } from './storage/storage';
 
 // Sound generation utilities using Web Audio API
-const audioContext = typeof window !== 'undefined' ? new (window.AudioContext || (window as any).webkitAudioContext)() : null;
+const getAudioContext = () => {
+  if (typeof window === 'undefined') return null;
+  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+  return AudioContextClass ? new AudioContextClass() : null;
+};
+const audioContext = getAudioContext();
 
 function playPourSound() {
   if (!audioContext) return;
@@ -37,7 +42,7 @@ function playPourSound() {
   oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.3);
   
   gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
   
   oscillator.start(audioContext.currentTime);
   oscillator.stop(audioContext.currentTime + 0.3);
@@ -60,7 +65,7 @@ function playWinSound() {
     
     gainNode.gain.setValueAtTime(0, audioContext.currentTime + i * 0.15);
     gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + i * 0.15 + 0.05);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + i * 0.15 + 0.3);
     
     oscillator.start(audioContext.currentTime + i * 0.15);
     oscillator.stop(audioContext.currentTime + i * 0.15 + 0.3);

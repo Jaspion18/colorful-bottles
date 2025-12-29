@@ -293,7 +293,7 @@ body {
 .bottle-container {
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 0;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.15));
   border: 3px solid var(--border-color);
   border-radius: 8px 8px 35px 35px;
@@ -311,7 +311,7 @@ body {
 
 .bottle-slot {
   height: var(--bottle-slot-height);
-  border-radius: 0px;
+  border-radius: 0;
   transition: all 0.3s ease;
   position: relative;
   display: flex;
